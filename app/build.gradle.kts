@@ -5,6 +5,16 @@ plugins {
 }
 
 android {
+
+    signingConfigs {
+        // CORRECTED: Use create("name") to define a new signing config
+        create("debugShared") {
+            storeFile = file(project.properties["DEV_STORE_FILE"] as String)
+            storePassword = project.properties["DEV_STORE_PASSWORD"] as String
+            keyAlias = project.properties["DEV_KEY_ALIAS"] as String
+            keyPassword = project.properties["DEV_KEY_PASSWORD"] as String
+        }
+    }
     namespace = "com.TI23B1.inventoryapp"
     compileSdk = 35
 
@@ -19,6 +29,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            // CORRECTED: Use getByName("name") to reference the signing config
+            signingConfig = signingConfigs.getByName("debugShared")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
